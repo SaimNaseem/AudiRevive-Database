@@ -20,7 +20,7 @@ def print_text_slowly1(text, delay=0.05):
 
 # Example usage:
 if __name__ == "__main__":
-    print_text_slowly0("SAEM AI\n")
+    print_text_slowly0("AUDIREVIVE\n")
 
     print_text_slowly1("Hir konnen Sie alle Audi Jahreswagen Modelle suchen")
     
