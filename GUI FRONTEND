@@ -1,0 +1,73 @@
+import time
+import pandas as pd
+import tkinter as tk
+from colorama import init, Fore
+
+init(autoreset=False)
+
+def print_text_slowly0_gui(text, delay=0.01, color="yellow"):
+    for char in text:
+        output_text.insert(tk.END, char, color)
+        output_text.update_idletasks()
+        time.sleep(delay)
+    output_text.insert(tk.END, '\n', color)
+    output_text.update_idletasks()
+
+def print_text_slowly1_gui(text, delay=0.001, color="white"):
+    for char in text:
+        output_text.insert(tk.END, char, color)
+        output_text.update_idletasks()
+        time.sleep(delay)
+    output_text.insert(tk.END, '\n', color)
+    output_text.update_idletasks()
+
+def read_data_from_excel(file_path, sheet_name):
+    try:
+        df = pd.read_excel(file_path, sheet_name=sheet_name, engine='openpyxl')
+        return df
+    except Exception as e:
+        output_text.insert(tk.END, f"Fehler beim Einlesen der Daten: {e}\n", Fore.RED)
+        output_text.update_idletasks()
+        return None
+
+def read_data_callback():
+    sheet_name = sheet_entry.get()
+    user_input = input_entry.get()
+    data_frame = read_data_from_excel(file_path0, sheet_name)
+
+    if data_frame is not None:
+        print_text_slowly0_gui("Wilkommen zu AUDI REVIVE ")
+        print_text_slowly0_gui(f"Sie haben das Modell '{sheet_name}' ausgewählt.", color="green")
+        print_text_slowly0_gui(f"Ihre Eingabe lautet: {user_input}", color="green")
+        print_text_slowly1_gui(f"\nHier sind die gewünschten Daten:\n{data_frame}", color="cyan")
+
+file_path0 = "A_Modelle.xlsx"
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+
+root = tk.Tk()
+root.title("AUDIREVIVE SOFTWARE")
+root.configure(bg="gray")  # Set background color
+
+root.iconbitmap("audi_logo.ico")
+
+sheet_label = tk.Label(root, text="Modell Name:")
+sheet_label.pack()
+sheet_entry = tk.Entry(root)
+sheet_entry.pack()
+
+input_label = tk.Label(root, text="Auto Firma:")
+input_label.pack()
+input_entry = tk.Entry(root)
+input_entry.pack()
+
+read_button = tk.Button(root, text="Daten einlesen", command=read_data_callback)
+read_button.pack()
+
+
+output_text = tk.Text(root, height=100, width=500)
+output_text.pack()
+
+
+
+root.mainloop()
